@@ -11,12 +11,10 @@ import {
     TextField,
     IconButton,
 } from "@mui/material";
-import ImageIcon from "@mui/icons-material/Image";
-import AttachFileIcon from "@mui/icons-material/AttachFile";
 import CloseIcon from "@mui/icons-material/Close";
 import "../styles/ProfileClientCreateJob.css";
 
-const ProfileClientCreateJob = () => {
+const ProfileClientCreateJob = ({ onJobPosted = () => { } }) => {
     const storedUser = JSON.parse(localStorage.getItem("user")) || {
         name: "Company Name",
         profilePicture: "/default-avatar.png",
@@ -26,10 +24,12 @@ const ProfileClientCreateJob = () => {
     const [jobTitle, setJobTitle] = useState("");
     const [jobDescription, setJobDescription] = useState("");
     const [budget, setBudget] = useState("");
+    const [jobType, setJobType] = useState("Full-Time"); // New field
+    const [workMode, setWorkMode] = useState("On-Site"); // New field
     const [jobPosts, setJobPosts] = useState([]);
 
     useEffect(() => {
-        const savedJobs = JSON.parse(localStorage.getItem("clientJobs")) || [];
+        const savedJobs = JSON.parse(localStorage.getItem("allJobs")) || [];
         setJobPosts(savedJobs);
     }, []);
 
@@ -47,6 +47,8 @@ const ProfileClientCreateJob = () => {
             title: jobTitle,
             description: jobDescription,
             budget,
+            jobType,
+            workMode,
             date: new Date().toLocaleDateString(),
             user: storedUser.name,
             profilePicture: storedUser.profilePicture,
@@ -54,8 +56,19 @@ const ProfileClientCreateJob = () => {
 
         const updatedJobs = [newJob, ...jobPosts];
         setJobPosts(updatedJobs);
-        localStorage.setItem("clientJobs", JSON.stringify(updatedJobs));
 
+        // ✅ Ensure localStorage updates AFTER state change
+        setTimeout(() => {
+            localStorage.setItem("allJobs", JSON.stringify(updatedJobs));
+            console.log("Job Posted:", newJob); // ✅ Debugging
+        }, 100);
+
+        // ✅ Notify parent component if provided
+        if (onJobPosted) {
+            onJobPosted(newJob);
+        }
+
+        // ✅ Reset form fields
         setJobTitle("");
         setJobDescription("");
         setBudget("");
@@ -64,18 +77,11 @@ const ProfileClientCreateJob = () => {
 
     return (
         <Box className="create-job-container">
-            {/* Job Input Box */}
             <Box className="job-input-box" onClick={handleOpen}>
                 <Avatar src={storedUser.profilePicture} className="job-avatar" />
-                <TextField
-                    className="job-text-field"
-                    placeholder="Post a new job..."
-                    fullWidth
-                    disabled
-                />
+                <TextField className="job-text-field" placeholder="Post a new job..." fullWidth disabled />
             </Box>
 
-            {/* Job Modal */}
             <Dialog open={open} onClose={handleClose} className="job-dialog">
                 <DialogTitle>
                     <Box className="job-header">
@@ -87,41 +93,9 @@ const ProfileClientCreateJob = () => {
                     </Box>
                 </DialogTitle>
                 <DialogContent>
-                    <TextField
-                        label="Job Title"
-                        fullWidth
-                        variant="outlined"
-                        value={jobTitle}
-                        onChange={(e) => setJobTitle(e.target.value)}
-                        className="job-title-input"
-                    />
-                    <TextField
-                        label="Job Description"
-                        fullWidth
-                        multiline
-                        rows={4}
-                        variant="outlined"
-                        value={jobDescription}
-                        onChange={(e) => setJobDescription(e.target.value)}
-                        className="job-description-input"
-                    />
-                    <TextField
-                        label="Budget ($)"
-                        fullWidth
-                        variant="outlined"
-                        type="number"
-                        value={budget}
-                        onChange={(e) => setBudget(e.target.value)}
-                        className="job-budget-input"
-                    />
-                    <Box className="job-actions">
-                        <Button startIcon={<ImageIcon />} className="job-action-button">
-                            Add Image
-                        </Button>
-                        <Button startIcon={<AttachFileIcon />} className="job-action-button">
-                            Attach File
-                        </Button>
-                    </Box>
+                    <TextField label="Job Title" fullWidth value={jobTitle} onChange={(e) => setJobTitle(e.target.value)} />
+                    <TextField label="Job Description" fullWidth multiline rows={4} value={jobDescription} onChange={(e) => setJobDescription(e.target.value)} />
+                    <TextField label="Budget ($)" fullWidth type="number" value={budget} onChange={(e) => setBudget(e.target.value)} />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handlePostJob} className="job-submit-button">
