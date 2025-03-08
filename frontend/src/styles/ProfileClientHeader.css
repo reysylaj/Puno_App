@@ -1,0 +1,80 @@
+.profile-client-header {
+    width: 100%;
+    background-color: #121212;
+    color: white;
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.cover-container {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.edit-cover-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
+.profile-info {
+    margin-top: -50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.avatar-container {
+    position: relative;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    border: 3px solid white;
+}
+
+.edit-avatar-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+}
+
+.details-container {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.details-container a {
+    color: #1e90ff;
+    text-decoration: none;
+}
+
+.details-container a:hover {
+    text-decoration: underline;
+}
+
+.edit-btn {
+    margin-top: 5px;
+    color: white;
+}
+
+.jobs-posted {
+    margin-top: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+    display: inline-block;
+}

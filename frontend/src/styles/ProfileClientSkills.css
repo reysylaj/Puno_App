@@ -1,0 +1,67 @@
+.client-skills-container {
+    background-color: #121212;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+/* Bio Section */
+.client-bio {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.bio-text {
+    font-size: 16px;
+    color: #ddd;
+}
+
+.bio-textarea {
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+/* Skills Section */
+.client-skills {
+    margin-top: 20px;
+}
+
+.skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.skill-chip {
+    background-color: #00bcd4;
+    color: white;
+    font-weight: bold;
+}
+
+.add-skill {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.skill-input {
+    flex: 1;
+}
+
+.add-skill-button {
+    background-color: #00bcd4;
+    color: white;
+    font-weight: bold;
+}
+
+.add-skill-button:hover {
+    background-color: #008ba3;
+}

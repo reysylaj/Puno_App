@@ -1,0 +1,49 @@
+.create-post-container {
+    background: #121212;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.post-input-box {
+    display: flex;
+    align-items: center;
+    background: #1f1f1f;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.post-avatar {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.post-actions {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+}
+
+.post-action-button {
+    color: white;
+}
+
+.post-dialog {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.post-textarea {
+    margin-top: 10px;
+}
+
+.post-submit-button {
+    background: #0073b1;
+    color: white;
+}

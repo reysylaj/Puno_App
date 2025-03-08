@@ -1,0 +1,115 @@
+.messenger-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+    background-color: #1c1c1c;
+    color: white;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.messenger-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Messenger Box */
+.messenger-box {
+    display: flex;
+    background: #282828;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* Sidebar with Clients */
+.client-list {
+    width: 30%;
+    background: #333;
+    padding: 15px;
+    border-right: 2px solid #444;
+}
+
+.client-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.client-list .MuiListItem-root {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    cursor: pointer;
+}
+
+.client-list .MuiListItem-root:hover {
+    background: rgba(255, 99, 132, 0.3);
+}
+
+/* Chat Window */
+.chat-window {
+    width: 70%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.chat-header {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Chat Messages */
+.chat-messages {
+    height: 300px;
+    overflow-y: auto;
+    padding: 10px;
+    background: #222;
+    border-radius: 8px;
+}
+
+.message {
+    padding: 8px 12px;
+    border-radius: 5px;
+    margin-bottom: 8px;
+    max-width: 80%;
+}
+
+.message.talent {
+    background: rgba(255, 99, 132, 0.8);
+    align-self: flex-end;
+    text-align: right;
+}
+
+.message.client {
+    background: rgba(99, 255, 132, 0.8);
+    align-self: flex-start;
+    text-align: left;
+}
+
+/* Chat Input */
+.chat-input {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.send-button {
+    background-color: red !important;
+    color: white !important;
+    font-weight: bold !important;
+    transition: background 0.3s ease;
+}
+
+.send-button:hover {
+    background-color: darkred !important;
+}
+
+.select-chat-text {
+    font-size: 16px;
+    color: #bbb;
+}

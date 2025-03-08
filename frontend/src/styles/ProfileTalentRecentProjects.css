@@ -1,0 +1,47 @@
+.recent-projects-container {
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.recent-projects-title {
+    color: black;
+    margin-bottom: 15px;
+}
+
+.no-posts {
+    color: gray;
+    text-align: center;
+}
+
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.post-card {
+    background: #1f1f1f;
+    color: white;
+    border-radius: 10px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+}
+
+.post-image {
+    height: 180px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
