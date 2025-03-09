@@ -1,25 +1,45 @@
 import { useState, useEffect } from "react";
-import { Box, Typography, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Select, MenuItem } from "@mui/material";
+import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Select, MenuItem } from "@mui/material";
 import "../styles/ProfileTalentTotalProposalsSent.css";
 
 const ProfileTalentTotalProposalsSent = () => {
-    const [proposals, setProposals] = useState(JSON.parse(localStorage.getItem("proposals")) || []);
-    const [filter, setFilter] = useState("All");
+    const [proposals, setProposals] = useState([]);
 
-    // Dummy Data (if no proposals exist)
+    // ✅ Load proposals from localStorage
+    const loadProposals = () => {
+        console.log("🔄 Fetching proposals from localStorage...");
+        const storedProposals = JSON.parse(localStorage.getItem("talentProposals")) || [];
+        console.log("✅ Loaded proposals:", storedProposals);
+        setProposals(storedProposals);
+    };
+
     useEffect(() => {
-        if (proposals.length === 0) {
-            const dummyProposals = [
-                { id: 1, jobTitle: "React Developer", company: "TechCorp", date: "2024-02-25", status: "Pending" },
-                { id: 2, jobTitle: "Frontend Engineer", company: "InnoSoft", date: "2024-02-20", status: "Accepted" },
-                { id: 3, jobTitle: "UI/UX Designer", company: "CreativeLabs", date: "2024-02-15", status: "Rejected" },
-            ];
-            setProposals(dummyProposals);
-            localStorage.setItem("proposals", JSON.stringify(dummyProposals));
-        }
+        loadProposals(); // Initial load
+
+        // ✅ Listen for "proposalUpdated" event
+        const handleProposalUpdate = () => {
+            console.log("📢 Proposal update event detected. Reloading proposals...");
+            loadProposals();
+        };
+
+        window.addEventListener("proposalUpdated", handleProposalUpdate);
+
+        return () => {
+            window.removeEventListener("proposalUpdated", handleProposalUpdate);
+        };
     }, []);
 
-    // Filter proposals based on status
+    // ✅ Refresh UI every 2 seconds (Failsafe)
+    useEffect(() => {
+        const interval = setInterval(() => {
+            console.log("⏳ Checking for proposal updates...");
+            loadProposals();
+        }, 2000);
+        return () => clearInterval(interval);
+    }, []);
+
+    // ✅ Filter options
+    const [filter, setFilter] = useState("All");
     const filteredProposals = filter === "All" ? proposals : proposals.filter((p) => p.status === filter);
 
     return (
@@ -41,7 +61,7 @@ const ProfileTalentTotalProposalsSent = () => {
                     <TableHead>
                         <TableRow>
                             <TableCell>Job Title</TableCell>
-                            <TableCell>Company</TableCell>
+                            <TableCell>Client</TableCell>
                             <TableCell>Date</TableCell>
                             <TableCell>Status</TableCell>
                         </TableRow>
@@ -49,9 +69,9 @@ const ProfileTalentTotalProposalsSent = () => {
                     <TableBody>
                         {filteredProposals.length > 0 ? (
                             filteredProposals.map((proposal) => (
-                                <TableRow key={proposal.id} className={`proposal-row ${proposal.status.toLowerCase()}`}>
+                                <TableRow key={proposal.id}>
                                     <TableCell>{proposal.jobTitle}</TableCell>
-                                    <TableCell>{proposal.company}</TableCell>
+                                    <TableCell>{proposal.client}</TableCell>
                                     <TableCell>{proposal.date}</TableCell>
                                     <TableCell className={`status-cell ${proposal.status.toLowerCase()}`}>
                                         {proposal.status}

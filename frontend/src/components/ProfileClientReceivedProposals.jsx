@@ -25,34 +25,44 @@ const ProfileClientReceivedProposals = () => {
 
     useEffect(() => {
         const storedProposals = JSON.parse(localStorage.getItem("receivedProposals")) || [];
-        console.log("Loaded Proposals in ProfileClientReceivedProposals:", storedProposals); // ✅ Debugging Log
+        console.log("✅ Loaded Proposals in ProfileClientReceivedProposals:", storedProposals);
         setProposals(storedProposals);
     }, []);
 
-
-    // Handle opening job details popup
+    // ✅ Open popup to view proposals for a specific job
     const handleOpenProposals = (jobTitle) => {
         const jobProposals = proposals.filter(proposal => proposal.jobTitle === jobTitle);
         setSelectedJob({ jobTitle, proposals: jobProposals });
         setOpen(true);
     };
 
-    // Handle closing the popup
+    // ✅ Close the popup
     const handleClose = () => {
         setOpen(false);
         setSelectedJob(null);
     };
 
-    // Handle proposal action (Accept/Reject)
+    // ✅ Handle Accept/Decline/Pending actions
     const handleAction = (proposalId, action) => {
         const updatedProposals = proposals.map(proposal =>
             proposal.id === proposalId ? { ...proposal, status: action } : proposal
         );
         setProposals(updatedProposals);
         localStorage.setItem("receivedProposals", JSON.stringify(updatedProposals));
+
+        // ✅ Update the talent's proposal status in localStorage
+        const talentProposals = JSON.parse(localStorage.getItem("talentProposals")) || [];
+        const updatedTalentProposals = talentProposals.map(proposal =>
+            proposal.id === proposalId ? { ...proposal, status: action } : proposal
+        );
+        localStorage.setItem("talentProposals", JSON.stringify(updatedTalentProposals));
+
+        // ✅ Trigger an update for the talent component
+        window.dispatchEvent(new Event("proposalUpdated"));
     };
 
-    // Group proposals by job title
+
+    // ✅ Group proposals by job title
     const groupedProposals = proposals.reduce((acc, proposal) => {
         acc[proposal.jobTitle] = (acc[proposal.jobTitle] || 0) + 1;
         return acc;
@@ -87,28 +97,34 @@ const ProfileClientReceivedProposals = () => {
                     {selectedJob?.proposals.map((proposal) => (
                         <List key={proposal.id} className="proposal-list">
                             <ListItem>
-                                <Avatar src={proposal.talentProfilePic} />
+                                <Avatar src={proposal.talentProfilePic || "/default-avatar.png"} />
                                 <ListItemText
-                                    primary={`${proposal.talentName} - ${proposal.talentRole}`}
-                                    secondary={proposal.text}
+                                    primary={`${proposal.talentName} ${proposal.talentSurname}`}
+                                    secondary={
+                                        <>
+                                            <Typography variant="body2">
+                                                <strong>Cover Letter:</strong> {proposal.coverLetter}
+                                            </Typography>
+                                            <Typography variant="body2">
+                                                <strong>Status:</strong> {proposal.status}
+                                            </Typography>
+                                        </>
+                                    }
                                 />
-                                {proposal.status ? (
-                                    <Typography className={`proposal-status ${proposal.status}`}>
-                                        {proposal.status === "Accepted" ? "✅ Accepted" : "❌ Rejected"}
-                                    </Typography>
-                                ) : (
-                                    <Box className="proposal-actions">
-                                        <Button className="accept-button" onClick={() => handleAction(proposal.id, "Accepted")}>
-                                            Accept
-                                        </Button>
-                                        <Button className="reject-button" onClick={() => handleAction(proposal.id, "Rejected")}>
-                                            Reject
-                                        </Button>
-                                        <IconButton className="message-button">
-                                            <ChatIcon />
-                                        </IconButton>
-                                    </Box>
-                                )}
+                                <Box className="proposal-actions">
+                                    <Button className="accept-button" onClick={() => handleAction(proposal.id, "Accepted")}>
+                                        Accept
+                                    </Button>
+                                    <Button className="reject-button" onClick={() => handleAction(proposal.id, "Rejected")}>
+                                        Decline
+                                    </Button>
+                                    <Button className="pending-button" onClick={() => handleAction(proposal.id, "Pending")}>
+                                        Pending
+                                    </Button>
+                                    <IconButton className="message-button">
+                                        <ChatIcon />
+                                    </IconButton>
+                                </Box>
                             </ListItem>
                         </List>
                     ))}

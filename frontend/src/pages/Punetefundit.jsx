@@ -68,11 +68,23 @@ const Punetefundit = () => {
     setProposalText(""); // Clear input
   };
 
-  // Submit Proposal
+  // ✅ Submit Proposal
+  // ✅ Submit Proposal
   const handleSubmitProposal = () => {
     if (!proposalText.trim()) return;
 
     const storedUser = JSON.parse(localStorage.getItem("user")); // Talent user info
+
+    // ✅ Check if the talent has already sent a proposal for this job
+    const existingTalentProposals = JSON.parse(localStorage.getItem("talentProposals")) || [];
+    const hasAlreadyApplied = existingTalentProposals.some(proposal =>
+      proposal.jobId === selectedJob.id && proposal.talentName === storedUser.name
+    );
+
+    if (hasAlreadyApplied) {
+      alert("❌ You have already sent a proposal for this job.");
+      return;
+    }
 
     const newProposal = {
       id: Date.now(),
@@ -86,18 +98,28 @@ const Punetefundit = () => {
       status: "Pending"
     };
 
-    // Save proposal for Talent
-    const existingTalentProposals = JSON.parse(localStorage.getItem("talentProposals")) || [];
-    localStorage.setItem("talentProposals", JSON.stringify([newProposal, ...existingTalentProposals]));
+    // ✅ Save proposal for Talent
+    const updatedTalentProposals = [newProposal, ...existingTalentProposals];
+    localStorage.setItem("talentProposals", JSON.stringify(updatedTalentProposals));
 
-    // Save proposal for Client
+    // ✅ Save proposal for Client
     const existingClientProposals = JSON.parse(localStorage.getItem("receivedProposals")) || [];
     localStorage.setItem("receivedProposals", JSON.stringify([newProposal, ...existingClientProposals]));
 
-    console.log("Proposal Submitted:", newProposal); // Debugging Log
+    console.log("✅ Proposal Submitted:", newProposal); // Debugging Log
+
+    // ✅ Trigger event for ProfileTalentTotalProposalsSent.jsx
+    window.dispatchEvent(new Event("proposalUpdated"));
+
+    // ✅ Force manual UI refresh
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
 
     handleCloseProposalPopup(); // Close proposal popup
   };
+
+
 
   return (
     <Box className="jobs-container">

@@ -1,59 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Box, Typography, Card, CardContent, Chip } from "@mui/material";
 import "../styles/ProfileTalentProposals.css";
 
 const ProfileTalentProposals = () => {
-    const [proposals] = useState([
-        {
-            id: 1,
-            jobTitle: "React Developer",
-            company: "Tech Solutions",
-            status: "Pending",
-            date: "March 2, 2024",
-        },
-        {
-            id: 2,
-            jobTitle: "UI/UX Designer",
-            company: "Creative Agency",
-            status: "Accepted",
-            date: "March 1, 2024",
-        },
-        {
-            id: 3,
-            jobTitle: "Full Stack Engineer",
-            company: "InnovateHub",
-            status: "Rejected",
-            date: "February 28, 2024",
-        },
-    ]);
+    const [proposals, setProposals] = useState([]);
 
-    // Count total proposals
-    const totalProposals = proposals.length;
+    useEffect(() => {
+        const storedProposals = JSON.parse(localStorage.getItem("proposals")) || [];
+        setProposals(storedProposals);
+    }, []);
 
     return (
         <Box className="proposals-container">
             <Typography variant="h6" className="proposals-title">
-                📩 Total Proposals Sent: {totalProposals}
+                📩 Total Proposals Sent: {proposals.length}
             </Typography>
 
             <Box className="proposals-list">
-                {proposals.map((proposal) => (
-                    <Card key={proposal.id} className="proposal-card">
-                        <CardContent>
-                            <Typography variant="h6">{proposal.jobTitle}</Typography>
-                            <Typography variant="body2" className="proposal-company">
-                                {proposal.company}
-                            </Typography>
-                            <Typography variant="body2" className="proposal-date">
-                                Sent on: {proposal.date}
-                            </Typography>
-                            <Chip
-                                label={proposal.status}
-                                className={`status-chip ${proposal.status.toLowerCase()}`}
-                            />
-                        </CardContent>
-                    </Card>
-                ))}
+                {proposals.length > 0 ? (
+                    proposals.map((proposal) => (
+                        <Card key={proposal.id} className="proposal-card">
+                            <CardContent>
+                                <Typography variant="h6">{proposal.jobTitle}</Typography>
+                                <Typography variant="body2" className="proposal-client">
+                                    {proposal.client}
+                                </Typography>
+                                <Typography variant="body2" className="proposal-date">
+                                    Sent on: {proposal.date}
+                                </Typography>
+                                <Chip
+                                    label={proposal.status}
+                                    className={`status-chip ${proposal.status.toLowerCase()}`}
+                                />
+                            </CardContent>
+                        </Card>
+                    ))
+                ) : (
+                    <Typography>No proposals sent yet.</Typography>
+                )}
             </Box>
         </Box>
     );

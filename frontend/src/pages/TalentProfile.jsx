@@ -11,7 +11,9 @@ import ProfileTalentSavedClients from "../components/ProfileTalentSavedClients";
 import ProfileTalentDashboardEarnings from "../components/ProfileTalentDashboardEarnings";
 import ProfileTalentMessenger from "../components/ProfileTalentMessenger";
 import ProfileTalentTestimonials from "../components/ProfileTalentTestimonial";
+
 import "../styles/TalentProfile.css";
+import ProfileTalentTotalProposalsSent from "../components/ProfileTalentTotalProposalsSent";
 
 const TalentProfile = () => {
     const [user, setUser] = useState(null);
@@ -53,7 +55,7 @@ const TalentProfile = () => {
             <ProfileTalentCreatePost addPost={addPost} /> {/* ✅ Pass `addPost` correctly */}
             <ProfileTalentRecentProjects posts={recentProjects} /> {/* ✅ Pass `recentProjects` instead of `posts` */}
             <ProfileTalentSavedJobs />
-            <ProfileTalentProposals />
+            <ProfileTalentTotalProposalsSent />
             <ProfileTalentClientHistory />
             <ProfileTalentSavedClients />
             <ProfileTalentDashboardEarnings />

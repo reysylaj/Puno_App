@@ -9,8 +9,13 @@ const ClientProposalListPopup = ({ proposals, open, onClose, onAccept, onDecline
                     {proposals.map((proposal) => (
                         <ListItem key={proposal.id}>
                             <ListItemText
-                                primary={`${proposal.jobTitle} - ${proposal.client}`}
-                                secondary={proposal.coverLetter}
+                                primary={`${proposal.talentName} ${proposal.talentSurname} - ${proposal.jobTitle}`}
+                                secondary={
+                                    <>
+                                        <Typography variant="body2"><strong>Status:</strong> {proposal.status}</Typography>
+                                        <Typography variant="body2"><strong>Cover Letter:</strong> {proposal.coverLetter}</Typography>
+                                    </>
+                                }
                             />
                             <Button onClick={() => onAccept(proposal.id)} color="success">Accept</Button>
                             <Button onClick={() => onDecline(proposal.id)} color="error">Decline</Button>
