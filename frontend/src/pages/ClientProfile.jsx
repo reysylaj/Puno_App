@@ -3,6 +3,9 @@ import { Box } from "@mui/material";
 import ProfileClientHeader from "../components/ProfileClientHeader";
 import ProfileClientCreateJob from "../components/ProfileClientCreateJob";
 import ProfileClientJobListings from "../components/ProfileClientJobListings";
+import ProfileClientJobDetails from "../components/ProfileClientJobDetails";
+import ProfileClientReceivedProposals from "../components/ProfileClientReceivedProposals";
+
 import ProfileClientMessenger from "../components/ProfileClientMessenger";
 import "../styles/ClientProfile.css";
 
@@ -25,7 +28,10 @@ const ClientProfile = () => {
             <ProfileClientHeader />
             <ProfileClientCreateJob onJobPosted={handleNewJob} /> {/* ✅ Pass function */}
             <ProfileClientJobListings jobs={jobs} />
+            <ProfileClientJobDetails />
+            <ProfileClientReceivedProposals />
             <ProfileClientMessenger />
+
         </Box>
     );
 };

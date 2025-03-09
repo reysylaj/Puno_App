@@ -6,18 +6,25 @@ import "../styles/ProfileTalentSkills.css";
 const ProfileTalentSkills = () => {
     // Retrieve stored user data or default values
     const storedUser = JSON.parse(localStorage.getItem("user")) || {
+        name: "Talent",
+        email: "default@email.com",
+        role: "talent",
         bio: "Write about yourself here...",
-        skills: ["JavaScript", "React", "Node.js"]
+        skills: [] // ✅ Always ensure `skills` exists
     };
 
-    const [bio, setBio] = useState(storedUser.bio);
-    const [skills, setSkills] = useState(storedUser.skills);
+    const [bio, setBio] = useState(storedUser.bio || "Write about yourself here...");
+    const [skills, setSkills] = useState(storedUser.skills || []);
     const [newSkill, setNewSkill] = useState("");
     const [editingBio, setEditingBio] = useState(false);
 
-    // Save to localStorage when updated
+    // ✅ Ensure updates do not remove other user data
     useEffect(() => {
-        localStorage.setItem("user", JSON.stringify({ bio, skills }));
+        localStorage.setItem("user", JSON.stringify({
+            ...storedUser, // Preserve all other user data
+            bio,
+            skills
+        }));
     }, [bio, skills]);
 
     // Handle adding a new skill
@@ -65,14 +72,18 @@ const ProfileTalentSkills = () => {
             {/* Skills Section */}
             <Typography variant="h5" className="skills-title">Skills & Expertise</Typography>
             <Box className="skills-container">
-                {skills.map((skill, index) => (
-                    <Chip
-                        key={index}
-                        label={skill}
-                        onDelete={() => handleRemoveSkill(skill)}
-                        className="skill-chip"
-                    />
-                ))}
+                {skills.length > 0 ? (
+                    skills.map((skill, index) => (
+                        <Chip
+                            key={index}
+                            label={skill}
+                            onDelete={() => handleRemoveSkill(skill)}
+                            className="skill-chip"
+                        />
+                    ))
+                ) : (
+                    <Typography>No skills added yet.</Typography>
+                )}
             </Box>
 
             {/* Add Skill Section */}

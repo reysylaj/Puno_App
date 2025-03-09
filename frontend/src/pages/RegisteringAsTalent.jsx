@@ -22,137 +22,78 @@ const RegisteringAsTalent = () => {
         setSelectedCategory(category);
     };
 
-    // Function to navigate to registration page with selected category
+    // ✅ Redirect to Talent Registration Form instead of skipping details
     const handleRegister = () => {
-        if (selectedCategory) {
-            navigate("/talent-registration", { state: { category: selectedCategory } });
-        } else {
+        if (!selectedCategory) {
             alert("Ju lutem zgjidhni një kategori para se të vazhdoni.");
+            return;
         }
+
+        // ✅ Store selected category temporarily in `sessionStorage` (not saved permanently)
+        sessionStorage.setItem("selectedTalentCategory", selectedCategory);
+
+        // ✅ Redirect to Talent Registration Form
+        navigate("/talent-registration");
     };
 
     return (
         <Box className="register-container">
-            {/* Title */}
-            <Typography variant="h4" className="register-title">
-                JU ZGJODHET TE REGJISTROHENI SI TALENT
-            </Typography>
+            <Typography variant="h4" className="register-title">JU ZGJODHET TE REGJISTROHENI SI TALENT</Typography>
 
-            {/* Description */}
             <Typography variant="body1" className="register-description">
-                Jeni te lutur te zgjidhni kategorine qe ndiheni te perfshire. Klikoni{" "}
+                Jeni të lutur të zgjidhni kategorinë ku ndiheni të përfshirë. Klikoni{" "}
                 <Tooltip title="Kliko për më shumë info">
                     <HelpOutlineIcon className="info-icon" />
                 </Tooltip>{" "}
-                per tu informuar me shume.
+                për t'u informuar më shumë.
             </Typography>
 
-            {/* Cards Container */}
+            {/* Talent Category Selection */}
             <Box className="cards-container">
-                {/* First Card - Student */}
-                <Card
-                    className={`register-card ${selectedCategory === "Jam student dhe kerkoj pune internship ne pozicione te lira ose ne fushën ku kam njohuri" ? "selected-card" : ""}`}
-                    onClick={() => handleCardClick("Jam student dhe kerkoj pune internship ne pozicione te lira ose ne fushën ku kam njohuri")}
-                >
+                <Card className={`register-card ${selectedCategory === "Jam student dhe kerkoj pune internship" ? "selected-card" : ""}`}
+                    onClick={() => handleCardClick("Jam student dhe kerkoj pune internship")}>
                     <CardContent>
                         <Typography variant="h6" className="card-title">Talent/</Typography>
-                        <Box className="icon-container">
-                            <SchoolIcon className="card-icon" />
-                        </Box>
-                        <Typography variant="body2" className="card-text">
-                            Jam student dhe kerkoj pune internship ne pozicione te lira ose ne fushën ku kam njohuri
-                        </Typography>
-                        <Box className="card-bottom">
-                            <IconButton onClick={() => handleInfoClick("Ky punëtor është student dhe kërkon internship.")} className="info-button">
-                                <HelpOutlineIcon className="info-icon" />
-                            </IconButton>
-                        </Box>
+                        <Box className="icon-container"><SchoolIcon className="card-icon" /></Box>
+                        <Typography variant="body2" className="card-text">Jam student dhe kerkoj pune internship</Typography>
                     </CardContent>
                 </Card>
 
-                {/* Second Card - Side Jobs */}
-                <Card
-                    className={`register-card ${selectedCategory === "Kerkoj nje pune te dyte/ projekte ne njohurite qe zoteroj" ? "selected-card" : ""}`}
-                    onClick={() => handleCardClick("Kerkoj nje pune te dyte/ projekte ne njohurite qe zoteroj")}
-                >
+                <Card className={`register-card ${selectedCategory === "Kerkoj nje pune te dyte/projekte" ? "selected-card" : ""}`}
+                    onClick={() => handleCardClick("Kerkoj nje pune te dyte/projekte")}>
                     <CardContent>
                         <Typography variant="h6" className="card-title">Talent/</Typography>
-                        <Box className="icon-container">
-                            <WorkIcon className="card-icon" />
-                        </Box>
-                        <Typography variant="body2" className="card-text">
-                            Kerkoj nje pune te dyte/ projekte ne njohurite qe zoteroj
-                        </Typography>
-                        <Box className="card-bottom">
-                            <IconButton onClick={() => handleInfoClick("Ky punëtor ka njohuri dhe kërkon punë të dytë.")} className="info-button">
-                                <HelpOutlineIcon className="info-icon" />
-                            </IconButton>
-                        </Box>
+                        <Box className="icon-container"><WorkIcon className="card-icon" /></Box>
+                        <Typography variant="body2" className="card-text">Kerkoj nje pune te dyte/projekte</Typography>
                     </CardContent>
                 </Card>
 
-                {/* Third Card - Freelancer Payments */}
-                <Card
-                    className={`register-card ${selectedCategory === "Kam ndjekës dhe klientët e mi, por dua të kalohet pagesa nga 1 platformë online" ? "selected-card" : ""}`}
-                    onClick={() => handleCardClick("Kam ndjekës dhe klientët e mi, por dua të kalohet pagesa nga 1 platformë online")}
-                >
+                <Card className={`register-card ${selectedCategory === "Kam ndjekës dhe dua pagesa online" ? "selected-card" : ""}`}
+                    onClick={() => handleCardClick("Kam ndjekës dhe dua pagesa online")}>
                     <CardContent>
                         <Typography variant="h6" className="card-title">Talent/</Typography>
-                        <Box className="icon-container">
-                            <PaymentIcon className="card-icon" />
-                        </Box>
-                        <Typography variant="body2" className="card-text">
-                            Kam ndjekës dhe klientët e mi, por dua të kalohet pagesa nga 1 platformë online
-                        </Typography>
-                        <Box className="card-bottom">
-                            <IconButton onClick={() => handleInfoClick("Ky punëtor ka klientë por dëshiron pagesa të menaxhuara.")} className="info-button">
-                                <HelpOutlineIcon className="info-icon" />
-                            </IconButton>
-                        </Box>
+                        <Box className="icon-container"><PaymentIcon className="card-icon" /></Box>
+                        <Typography variant="body2" className="card-text">Kam ndjekës dhe dua pagesa online</Typography>
                     </CardContent>
                 </Card>
 
-                {/* Fourth Card - Urgent Jobs */}
-                <Card
-                    className={`register-card ${selectedCategory === "Jam i papunë dhe jo student, dhe kerkoj pune urgjente ne pozicione te lira ose ne fushën ku kam njohuri" ? "selected-card" : ""}`}
-                    onClick={() => handleCardClick("Jam i papunë dhe jo student, dhe kerkoj pune urgjente ne pozicione te lira ose ne fushën ku kam njohuri")}
-                >
+                <Card className={`register-card ${selectedCategory === "Jam i papunë dhe kerkoj pune urgjente" ? "selected-card" : ""}`}
+                    onClick={() => handleCardClick("Jam i papunë dhe kerkoj pune urgjente")}>
                     <CardContent>
                         <Typography variant="h6" className="card-title">Talent/</Typography>
-                        <Box className="icon-container">
-                            <PersonOffIcon className="card-icon" />
-                        </Box>
-                        <Typography variant="body2" className="card-text">
-                            Jam i papunë dhe jo student, dhe kerkoj pune urgjente ne pozicione te lira ose ne fushën ku kam njohuri
-                        </Typography>
-                        <Box className="card-bottom">
-                            <IconButton onClick={() => handleInfoClick("Ky punëtor është i papunë dhe kërkon punë urgjente.")} className="info-button">
-                                <HelpOutlineIcon className="info-icon" />
-                            </IconButton>
-                        </Box>
+                        <Box className="icon-container"><PersonOffIcon className="card-icon" /></Box>
+                        <Typography variant="body2" className="card-text">Jam i papunë dhe kerkoj pune urgjente</Typography>
                     </CardContent>
                 </Card>
             </Box>
 
-            {/* Info Box */}
-            {infoText && (
-                <Box className="info-box">
-                    <Typography variant="body1">{infoText}</Typography>
-                </Box>
-            )}
-
             {/* Register Button */}
-            <Button className="register-button" onClick={handleRegister}>
-                REGJISTROHU
-            </Button>
+            <Button className="register-button" onClick={handleRegister}>REGJISTROHU</Button>
 
             {/* Login Link */}
             <Typography variant="body1" className="login-text">
-                Nese keni nje llogari me ne jeni te lutur te beni login{" "}
-                <Link to="/login" className="login-link">
-                    ketu
-                </Link>
-                .
+                Nëse keni një llogari, jeni të lutur të bëni login{" "}
+                <Link to="/login" className="login-link">këtu</Link>.
             </Typography>
         </Box>
     );

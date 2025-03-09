@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Box, Container } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import ProfileTalentHeader from "../components/ProfileTalentHeader";
 import ProfileTalentSkills from "../components/ProfileTalentSkills";
 import ProfileTalentCreatePost from "../components/ProfileTalentCreatePost";
@@ -11,51 +11,55 @@ import ProfileTalentSavedClients from "../components/ProfileTalentSavedClients";
 import ProfileTalentDashboardEarnings from "../components/ProfileTalentDashboardEarnings";
 import ProfileTalentMessenger from "../components/ProfileTalentMessenger";
 import ProfileTalentTestimonials from "../components/ProfileTalentTestimonial";
+import "../styles/TalentProfile.css";
 
 const TalentProfile = () => {
-    const [storedUser, setStoredUser] = useState(null);
-    const [posts, setPosts] = useState([]);
+    const [user, setUser] = useState(null);
+    const [recentProjects, setRecentProjects] = useState([]);
 
     useEffect(() => {
-        const savedUser = JSON.parse(localStorage.getItem("user"));
-        console.log("Loaded User Data in TalentProfile:", savedUser);
-
-        if (savedUser) {
-            setStoredUser(savedUser);
+        // ✅ Get the user from localStorage
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+            const parsedUser = JSON.parse(storedUser);
+            setUser(parsedUser);
+            console.log("✅ Loaded User Data in TalentProfile:", parsedUser);
         } else {
-            console.error("No user data found in localStorage.");
+            console.error("❌ No user data found in localStorage.");
         }
 
-        const savedPosts = JSON.parse(localStorage.getItem("talentPosts")) || [];
-        setPosts(savedPosts);
+        // ✅ Load recent projects from localStorage
+        const storedProjects = JSON.parse(localStorage.getItem("recentProjects")) || [];
+        setRecentProjects(storedProjects);
+        console.log("✅ Loaded Recent Projects:", storedProjects);
     }, []);
 
+    // ✅ Define `addPost` function to add a new project
     const addPost = (newPost) => {
-        const updatedPosts = [newPost, ...posts];
-        setPosts(updatedPosts);
-        localStorage.setItem("talentPosts", JSON.stringify(updatedPosts));
+        const updatedProjects = [newPost, ...recentProjects]; // Add new post to the beginning
+        setRecentProjects(updatedProjects);
+        localStorage.setItem("recentProjects", JSON.stringify(updatedProjects)); // ✅ Save to localStorage
+        console.log("✅ New Post Added:", newPost);
     };
 
-    if (!storedUser) {
-        return <h1>Loading Profile...</h1>;
+    if (!user) {
+        return <Typography variant="h4">Loading Profile...</Typography>;
     }
 
     return (
-        <Container maxWidth="lg">
-            <Box className="talent-profile">
-                <ProfileTalentHeader user={storedUser} />
-                <ProfileTalentSkills />
-                <ProfileTalentCreatePost addPost={addPost} />
-                <ProfileTalentRecentProjects posts={posts} />
-                <ProfileTalentSavedJobs />
-                <ProfileTalentProposals />
-                <ProfileTalentClientHistory />
-                <ProfileTalentSavedClients />
-                <ProfileTalentDashboardEarnings />
-                <ProfileTalentMessenger />
-                <ProfileTalentTestimonials />
-            </Box>
-        </Container>
+        <Box className="profile-container">
+            <ProfileTalentHeader user={user} />
+            <ProfileTalentSkills />
+            <ProfileTalentCreatePost addPost={addPost} /> {/* ✅ Pass `addPost` correctly */}
+            <ProfileTalentRecentProjects posts={recentProjects} /> {/* ✅ Pass `recentProjects` instead of `posts` */}
+            <ProfileTalentSavedJobs />
+            <ProfileTalentProposals />
+            <ProfileTalentClientHistory />
+            <ProfileTalentSavedClients />
+            <ProfileTalentDashboardEarnings />
+            <ProfileTalentMessenger />
+            <ProfileTalentTestimonials />
+        </Box>
     );
 };
 

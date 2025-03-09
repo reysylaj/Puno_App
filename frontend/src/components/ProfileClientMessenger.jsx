@@ -26,7 +26,7 @@ const ProfileClientMessenger = () => {
                 <Typography variant="h6">Messages</Typography>
                 <List>
                     {conversations.map((chat) => (
-                        <ListItem key={chat.id} button onClick={() => handleSelectChat(chat)}>
+                        <ListItem button onClick={() => handleSelectChat(chat)}>
                             <Avatar src={chat.avatar} />
                             <ListItemText primary={chat.name} secondary={chat.lastMessage} />
                         </ListItem>
@@ -57,4 +57,3 @@ const ProfileClientMessenger = () => {
 };
 
 export default ProfileClientMessenger;
-

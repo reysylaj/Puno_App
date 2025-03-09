@@ -31,23 +31,30 @@ const ClientSideRegistration = () => {
         }
 
         const userData = {
+            id: Date.now(),
             name: formData.firstName,
             surname: formData.lastName,
             email: formData.email,
-            password: formData.password, // ✅ Ensure password is saved
+            password: formData.password,
             role: "client",
             category: selectedCategory,
         };
 
-        console.log("User Data to be Saved:", userData); // ✅ Debugging Step 1
+        console.log("User Data to be Saved:", userData);
+
+        // ✅ Retrieve existing users and store new client
+        const storedUsers = JSON.parse(localStorage.getItem("users")) || [];
+        const updatedUsers = [...storedUsers, userData];
+        localStorage.setItem("users", JSON.stringify(updatedUsers));
+
+        // ✅ Save current user session
+        localStorage.setItem("user", JSON.stringify(userData));
 
         loginUser(userData); // ✅ Save user in Context
-        localStorage.setItem("user", JSON.stringify(userData)); // ✅ Save in localStorage
-
-        console.log("Stored User in localStorage:", localStorage.getItem("user")); // ✅ Debugging Step 2
 
         navigate("/client-profile");
     };
+
 
 
 
